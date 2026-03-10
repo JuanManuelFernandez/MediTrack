@@ -50,7 +50,7 @@ public class AgregarMedicamento extends AppCompatActivity {
             registro.put("hora", hora);
             registro.put("cantidad", cantidad);
 
-            BaseDeDatos.insert("recordatorios", null, registro);
+            BaseDeDatos.insert("Recordatorio", null, registro);
 
             BaseDeDatos.close();
 

@@ -3,6 +3,8 @@ package com.example.meditrack;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.app.AlertDialog;
+
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ListView;
@@ -38,24 +40,52 @@ public class MainActivity extends AppCompatActivity {
 
         CambiarTitulo();
 
-        ArrayList<String> listaMedicamentos = ObtenerRecordatorios();
+        final ArrayList<String>[] listaMedicamentos = new ArrayList[]{ObtenerRecordatorios()};
 
         ListView listView = findViewById(R.id.listaMedicamentos);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 R.layout.medicamento,
                 R.id.textMedicamento,
-                listaMedicamentos
+                listaMedicamentos[0]
         );
         listView.setAdapter(adapter);
 
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            String itemSeleccionado = listaMedicamentos[0].get(position);
+
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Acciones")
+                    .setMessage("¿Qué deseas hacer?")
+                    .setPositiveButton("Modificar", (dialog, which) -> {
+                        //FALTA AGREGAR LA PANTALLA PARA MODIFICAR (RECORDAR QUE SE DEBEN CARGAR AUTOMATICAMENTE LOS DATOS DEL RECORDATORIO)
+                    })
+                    .setNegativeButton("Eliminar", (dialog, which) -> {
+                        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 1);
+                        SQLiteDatabase db = admin.getWritableDatabase();
+
+                        // Eliminar
+                        db.delete("Recordatorio", "medicamento=?", new String[]{itemSeleccionado.split(" - ")[0]});
+                        db.close();
+
+                        listaMedicamentos[0] = ObtenerRecordatorios();
+                        ArrayAdapter<String> nuevoAdapter = new ArrayAdapter<>(
+                                MainActivity.this,
+                                R.layout.medicamento,
+                                R.id.textMedicamento,
+                                listaMedicamentos[0]
+                        );
+                        listView.setAdapter(nuevoAdapter);
+                    })
+                    .show();
+        });
     }
     private ArrayList<String> ObtenerRecordatorios() {
         ArrayList<String> lista = new ArrayList<>();
         AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 1);
-        SQLiteDatabase db = admin.getReadableDatabase();
+        SQLiteDatabase BaseDeDatos = admin.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT medicamento, hora, cantidad FROM Recordatorio", null);
+        Cursor cursor = BaseDeDatos.rawQuery("SELECT medicamento, hora, cantidad FROM Recordatorio", null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -68,10 +98,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         cursor.close();
-        db.close();
+        BaseDeDatos.close();
 
         return lista;
     }
+
     private void CambiarTitulo() {
         TextView titulo = findViewById(R.id.textView3); //OBTENER REFERENCIA
 
