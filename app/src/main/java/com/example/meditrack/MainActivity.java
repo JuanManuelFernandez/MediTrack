@@ -1,5 +1,7 @@
 package com.example.meditrack;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,35 +36,10 @@ public class MainActivity extends AppCompatActivity {
 
         TextView textRecordatorio = findViewById(R.id.textRecordatorio);
 
-        mostrarRecordatorio(textRecordatorio, "Ibuprofeno", "20:21");
-
         CambiarTitulo();
 
-        ArrayList<String> listaMedicamentos = new ArrayList<>();
-        listaMedicamentos.add("Ibuprofeno - 20:21");
-        listaMedicamentos.add("Paracetamol - 08:00");
-        listaMedicamentos.add("Amoxicilina - 12:30");
-        listaMedicamentos.add("Omeprazol - 07:00");
-        listaMedicamentos.add("Aspirina - 09:15");
-        listaMedicamentos.add("Metformina - 18:00");
-        listaMedicamentos.add("Losartán - 22:00");
-        listaMedicamentos.add("Atorvastatina - 21:00");
-        listaMedicamentos.add("Clonazepam - 23:00");
-        listaMedicamentos.add("Vitamina D - 10:00");
-        listaMedicamentos.add("Hierro - 14:00");
-        listaMedicamentos.add("Ibuprofeno - 20:21");
-        listaMedicamentos.add("Paracetamol - 08:00");
-        listaMedicamentos.add("Amoxicilina - 12:30");
-        listaMedicamentos.add("Omeprazol - 07:00");
-        listaMedicamentos.add("Aspirina - 09:15");
-        listaMedicamentos.add("Metformina - 18:00");
-        listaMedicamentos.add("Losartán - 22:00");
-        listaMedicamentos.add("Atorvastatina - 21:00");
-        listaMedicamentos.add("Clonazepam - 23:00");
-        listaMedicamentos.add("Vitamina D - 10:00");
-        listaMedicamentos.add("Hierro - 14:00");
+        ArrayList<String> listaMedicamentos = ObtenerRecordatorios();
 
-        // Configurar ListView
         ListView listView = findViewById(R.id.listaMedicamentos);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
@@ -72,6 +49,28 @@ public class MainActivity extends AppCompatActivity {
         );
         listView.setAdapter(adapter);
 
+    }
+    private ArrayList<String> ObtenerRecordatorios() {
+        ArrayList<String> lista = new ArrayList<>();
+        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 1);
+        SQLiteDatabase db = admin.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT medicamento, hora, cantidad FROM Recordatorio", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String medicamento = cursor.getString(0);
+                String hora = cursor.getString(1);
+                int cantidad = cursor.getInt(2);
+
+                lista.add(medicamento + " - " + hora + " (x" + cantidad + ")");
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return lista;
     }
     private void CambiarTitulo() {
         TextView titulo = findViewById(R.id.textView3); //OBTENER REFERENCIA
