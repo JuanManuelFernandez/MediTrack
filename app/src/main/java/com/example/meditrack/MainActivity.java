@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        //REALIZAR METODO PARA ACTUALIZAR AUTOMATICAMENTE EL RECORDATORIO
         TextView textRecordatorio = findViewById(R.id.textRecordatorio);
 
         CambiarTitulo();
@@ -51,14 +52,20 @@ public class MainActivity extends AppCompatActivity {
         );
         listView.setAdapter(adapter);
 
+        //CLICKEAR ITEMS EN LA LISTA
         listView.setOnItemClickListener((parent, view, position, id) -> {
             String itemSeleccionado = listaMedicamentos[0].get(position);
+
+            String codigoSeleccionado = itemSeleccionado.split(" - ")[0];
 
             new AlertDialog.Builder(MainActivity.this)
                     .setTitle("Acciones")
                     .setMessage("¿Qué deseas hacer?")
                     .setPositiveButton("Modificar", (dialog, which) -> {
-                        //FALTA AGREGAR LA PANTALLA PARA MODIFICAR (RECORDAR QUE SE DEBEN CARGAR AUTOMATICAMENTE LOS DATOS DEL RECORDATORIO)
+                        //MODIFICAR
+                        Intent modificar = new Intent(this, ModificarRecordatorio.class);
+                        modificar.putExtra("codigo", Integer.parseInt(codigoSeleccionado));
+                        startActivity(modificar);
                     })
                     .setNegativeButton("Eliminar", (dialog, which) -> {
                         AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 1);
@@ -85,15 +92,16 @@ public class MainActivity extends AppCompatActivity {
         AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 1);
         SQLiteDatabase BaseDeDatos = admin.getReadableDatabase();
 
-        Cursor cursor = BaseDeDatos.rawQuery("SELECT medicamento, hora, cantidad FROM Recordatorio", null);
+        Cursor cursor = BaseDeDatos.rawQuery("SELECT codigo, medicamento, hora, cantidad FROM Recordatorio", null);
 
         if (cursor.moveToFirst()) {
             do {
-                String medicamento = cursor.getString(0);
-                String hora = cursor.getString(1);
-                int cantidad = cursor.getInt(2);
+                int codigo = cursor.getInt(0);
+                String medicamento = cursor.getString(1);
+                String hora = cursor.getString(2);
+                int cantidad = cursor.getInt(3);
 
-                lista.add(medicamento + " - " + hora + " (x" + cantidad + ")");
+                lista.add(codigo + " - " + medicamento + " - " + hora + " (x" + cantidad + ")");
             } while (cursor.moveToNext());
         }
 
@@ -102,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
 
         return lista;
     }
-
     private void CambiarTitulo() {
         TextView titulo = findViewById(R.id.textView3); //OBTENER REFERENCIA
 
@@ -131,6 +138,5 @@ public class MainActivity extends AppCompatActivity {
     public void Btn_Agregar(View view){
         Intent agregar = new Intent(this, AgregarMedicamento.class);
         startActivity(agregar);
-
     }
 }

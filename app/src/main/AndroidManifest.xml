@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MediTrack">
         <activity
+            android:name=".ModificarRecordatorio"
+            android:exported="false" />
+        <activity
             android:name=".AgregarMedicamento"
             android:exported="false" />
         <activity
