@@ -1,7 +1,6 @@
 package com.example.meditrack;
 
 import android.os.Bundle;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ListView;
 import android.view.View;
@@ -24,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        View vista = getLayoutInflater().inflate(R.layout.activity_agregar_medicamento, null);
+        View vista = getLayoutInflater().inflate(R.layout.activity_agregar_recordatorio, null);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -99,8 +98,13 @@ public class MainActivity extends AppCompatActivity {
     }
     //BOTON AGREGAR
     public void Btn_Agregar(View view){
-        Intent agregar = new Intent(this, AgregarMedicamento.class);
+        Intent agregar = new Intent(this, AgregarRecordatorio.class);
         startActivity(agregar);
+    }
+
+    public void Btn_RediMedica(View view){
+        Intent RediMedi = new Intent(this, AgregarMedicamento.class);
+        startActivity(RediMedi);
 
     }
 }

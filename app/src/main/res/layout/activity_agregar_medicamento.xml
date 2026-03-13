@@ -5,87 +5,83 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#404040"
     tools:context=".AgregarMedicamento">
 
-    <EditText
-        android:id="@+id/txt_medicamento"
-        android:layout_width="179dp"
-        android:layout_height="43dp"
-        android:ems="10"
-        android:hint="Medicamento"
-        android:inputType="text"
-        android:text=""
-        android:textColorHint="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.13"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:id="@+id/txt_cantidad"
-        android:layout_width="106dp"
-        android:layout_height="41dp"
-        android:ems="10"
-        android:hint="Cantidad"
-        android:inputType="text"
-        android:text="@string/Cantidad"
-        android:textColorHint="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.38"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.243"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:id="@+id/txt_horario"
-        android:layout_width="134dp"
-        android:layout_height="40dp"
-        android:ems="10"
-        android:hint="Horario"
-        android:inputType="text"
-        android:text="@string/Horario"
-        android:textColorHint="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.418"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.348"
-        tools:ignore="MissingConstraints" />
-
-    <Button
-        android:id="@+id/button"
+    <TextView
+        android:id="@+id/txt_AgreMedi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="Btn_Volver"
-        android:text="@string/BotonVolver"
-        android:backgroundTint="@color/rojo"
+        android:text="Agregar medicamento"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.315"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintVertical_bias="0.081" />
 
-    <Button
-        android:id="@+id/button3"
+    <EditText
+        android:id="@+id/et_Agremedica"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/green_light"
-        android:onClick="Btn_Agregar"
-        android:text="@string/Agregar"
+        android:layout_marginTop="60dp"
+        android:ems="10"
+        android:hint="Nombre medicamento"
+        android:inputType="text"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.325"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_AgreMedi" />
+
+    <EditText
+        android:id="@+id/et_CantMedi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:ems="10"
+        android:hint="Ingrese la cantidad total "
+        android:inputType="number"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.325"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_Agremedica" />
+
+    <TextView
+        android:id="@+id/txt_UniMedida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="Seleccione la unidad de medida"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.445"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_CantMedi" />
+
+    <Spinner
+        android:id="@+id/Sp_UniMedidas"
+        android:layout_width="230dp"
+        android:layout_height="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.721"
+        app:layout_constraintHorizontal_bias="0.314"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_UniMedida"
+        app:layout_constraintVertical_bias="0.117" />
+
+    <Button
+        android:id="@+id/btn_AgregarMedi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="btn_AgregarMedi"
+        android:text="Agregar medicamento"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Sp_UniMedidas"
+        app:layout_constraintVertical_bias="0.475" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

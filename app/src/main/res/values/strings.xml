@@ -8,4 +8,5 @@
     <string name="Horario" />
     <string name="BotonVolver">Volver</string>
     <string name="Agregar">Agregar</string>
+    <string name="medica">Agregar Medicamento</string>
 </resources>

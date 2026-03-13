@@ -1,73 +1,42 @@
 package com.example.meditrack;
 
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import android.view.View;
-import android.content.Intent;
-import android.widget.EditText;
-import android.widget.Toast;
 
 public class AgregarMedicamento extends AppCompatActivity {
 
-    private EditText et_medicamento, et_hora, et_cantidad;
+    private EditText etm,etc;
+    private Spinner sp_u;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_agregar_medicamento);
 
-        et_medicamento = (EditText)findViewById(R.id.txt_medicamento);
-        et_cantidad = (EditText)findViewById(R.id.txt_cantidad);
-        et_hora = (EditText)findViewById(R.id.txt_horario);
+        etm = (EditText)findViewById(R.id.et_Agremedica);
+        etc = (EditText)findViewById(R.id.et_CantMedi);
+        sp_u = (Spinner)findViewById(R.id.Sp_UniMedidas);
 
+        String [] UniMedidas = {"Kilogramos","Gramos","Miligramos","Litros","Militros"};
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-    }
-    //BOTON AGREGAR
-    public void Btn_Agregar(View view){
-        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 1);
-        SQLiteDatabase BaseDeDatos = admin.getWritableDatabase();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,UniMedidas);
+        sp_u.setAdapter(adapter);
 
-        String medicamento = et_medicamento.getText().toString();
-        String cantidad = et_cantidad.getText().toString();
-        String hora = et_hora.getText().toString();
-
-        if(!medicamento.isEmpty() && !cantidad.isEmpty() && !hora.isEmpty()){
-            ContentValues registro = new ContentValues();
-            registro.put("medicamento", medicamento);
-            registro.put("hora", hora);
-            registro.put("cantidad", cantidad);
-
-            BaseDeDatos.insert("recordatorios", null, registro);
-
-            BaseDeDatos.close();
-
-            et_medicamento.setText("");
-            et_cantidad.setText("");
-            et_hora.setText("");
-
-            Toast.makeText(this, "Recordatorio guardado", Toast.LENGTH_SHORT).show();
         }
-        else{
-            Toast.makeText(this, "Debe llenar todos los campos", Toast.LENGTH_SHORT).show();
-        }
+    public void btn_AgregarMedi(View view){
+        Toast.makeText(this,"Medicamento agregado con exito",Toast.LENGTH_SHORT).show();
 
     }
-    //BOTON VOLVER
-    public void Btn_Volver(View view){
-        Intent volver = new Intent(this, MainActivity.class);
-        startActivity(volver);
-    }
+
+
 }
