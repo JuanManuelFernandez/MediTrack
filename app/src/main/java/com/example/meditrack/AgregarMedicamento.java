@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 public class AgregarMedicamento extends AppCompatActivity {
 
-    private EditText et_medicamento, et_hora, et_cantidad;
+    private EditText et_medicamento, et_hora, et_cantidad, et_dosis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +27,7 @@ public class AgregarMedicamento extends AppCompatActivity {
         et_medicamento = (EditText)findViewById(R.id.txt_medicamento);
         et_cantidad = (EditText)findViewById(R.id.txt_cantidad);
         et_hora = (EditText)findViewById(R.id.txt_horario);
+        et_dosis = (EditText)findViewById(R.id.txt_dosis);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -36,18 +37,20 @@ public class AgregarMedicamento extends AppCompatActivity {
     }
     //BOTON AGREGAR
     public void Btn_Agregar(View view){
-        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 1);
+        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 3);
         SQLiteDatabase BaseDeDatos = admin.getWritableDatabase();
 
         String medicamento = et_medicamento.getText().toString();
         String cantidad = et_cantidad.getText().toString();
         String hora = et_hora.getText().toString();
+        String dosis = et_dosis.getText().toString();
 
         if(!medicamento.isEmpty() && !cantidad.isEmpty() && !hora.isEmpty()){
             ContentValues registro = new ContentValues();
             registro.put("medicamento", medicamento);
             registro.put("hora", hora);
             registro.put("cantidad", cantidad);
+            registro.put("dosis", dosis);
 
             BaseDeDatos.insert("Recordatorio", null, registro);
 
@@ -56,6 +59,7 @@ public class AgregarMedicamento extends AppCompatActivity {
             et_medicamento.setText("");
             et_cantidad.setText("");
             et_hora.setText("");
+            et_dosis.setText("");
 
             Toast.makeText(this, "Recordatorio guardado", Toast.LENGTH_SHORT).show();
         }

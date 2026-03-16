@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        //REALIZAR METODO PARA ACTUALIZAR AUTOMATICAMENTE EL RECORDATORIO
         TextView textRecordatorio = findViewById(R.id.textRecordatorio);
 
         CambiarTitulo();
@@ -68,11 +67,11 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(modificar);
                     })
                     .setNegativeButton("Eliminar", (dialog, which) -> {
-                        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 1);
+                        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 3);
                         SQLiteDatabase db = admin.getWritableDatabase();
 
                         // Eliminar
-                        db.delete("Recordatorio", "medicamento=?", new String[]{itemSeleccionado.split(" - ")[0]});
+                        db.delete("Recordatorio", "medicamento=?", new String[]{itemSeleccionado.split(" - ")[1]});
                         db.close();
 
                         listaMedicamentos[0] = ObtenerRecordatorios();
@@ -89,10 +88,10 @@ public class MainActivity extends AppCompatActivity {
     }
     private ArrayList<String> ObtenerRecordatorios() {
         ArrayList<String> lista = new ArrayList<>();
-        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 1);
+        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 3);
         SQLiteDatabase BaseDeDatos = admin.getReadableDatabase();
 
-        Cursor cursor = BaseDeDatos.rawQuery("SELECT codigo, medicamento, hora, cantidad FROM Recordatorio", null);
+        Cursor cursor = BaseDeDatos.rawQuery("SELECT codigo, medicamento, hora, cantidad, dosis FROM Recordatorio", null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -100,8 +99,9 @@ public class MainActivity extends AppCompatActivity {
                 String medicamento = cursor.getString(1);
                 String hora = cursor.getString(2);
                 int cantidad = cursor.getInt(3);
+                int dosis = cursor.getInt(4);
 
-                lista.add(codigo + " - " + medicamento + " - " + hora + " (x" + cantidad + ")");
+                lista.add(codigo + " - " + medicamento + " - " + hora + " horas" + " - " + " (x" + dosis + ")" + " - " + "Restantes: " + cantidad);
             } while (cursor.moveToNext());
         }
 
