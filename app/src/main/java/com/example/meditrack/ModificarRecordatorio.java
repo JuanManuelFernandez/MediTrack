@@ -38,10 +38,10 @@ public class ModificarRecordatorio extends AppCompatActivity {
 
         int codigo = getIntent().getIntExtra("codigo", -1);
 
-        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 3);
+        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 4);
         SQLiteDatabase db = admin.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT medicamento, hora, cantidad, dosis FROM Recordatorio WHERE codigo=" + codigo, null);
+        Cursor cursor = db.rawQuery("SELECT medicamento, hora, cantidad, dosis, fechaRegistro FROM Recordatorio WHERE codigo=" + codigo, null);
 
         cursor.moveToFirst();
 
@@ -55,7 +55,7 @@ public class ModificarRecordatorio extends AppCompatActivity {
     }
     //MODIFICAR
     public void Btn_Modificar(View view){
-        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 3);
+        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 4);
         SQLiteDatabase BaseDeDatos = admin.getWritableDatabase();
 
         int codigo = getIntent().getIntExtra("codigo", - 1);

@@ -1,10 +1,13 @@
 package com.example.meditrack;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.app.AlertDialog;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ListView;
@@ -36,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        TextView textRecordatorio = findViewById(R.id.textRecordatorio);
-
         CambiarTitulo();
 
         final ArrayList<String>[] listaMedicamentos = new ArrayList[]{ObtenerRecordatorios()};
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(modificar);
                     })
                     .setNegativeButton("Eliminar", (dialog, which) -> {
-                        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 3);
+                        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 4);
                         SQLiteDatabase db = admin.getWritableDatabase();
 
                         // Eliminar
@@ -86,9 +87,15 @@ public class MainActivity extends AppCompatActivity {
                     .show();
         });
     }
+    //FUNCIÓN QUE SE LLAMA CADA VEZ QUE MAIN VUELVE A ESTAR VISIBLE
+    @Override
+    protected void onResume(){
+        super.onResume();
+        actualizarTextViewRecordatorio();
+    }
     private ArrayList<String> ObtenerRecordatorios() {
         ArrayList<String> lista = new ArrayList<>();
-        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 3);
+        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 4);
         SQLiteDatabase BaseDeDatos = admin.getReadableDatabase();
 
         Cursor cursor = BaseDeDatos.rawQuery("SELECT codigo, medicamento, hora, cantidad, dosis FROM Recordatorio", null);
@@ -125,15 +132,59 @@ public class MainActivity extends AppCompatActivity {
             titulo.setText("¡Buenas noches!");
         }
     }
-    private void mostrarRecordatorio(TextView textRecordatorio, String medicamento, String horaProgramada) {
-        String horaActual = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+    private void actualizarTextViewRecordatorio() {
+        TextView textViewRecordatorio = findViewById(R.id.textViewRecordatorio);
 
-        if (horaActual.equals(horaProgramada)) {
-            textRecordatorio.setText("Recordatorio: Tomar " + medicamento);
-        } else {
-            textRecordatorio.setText("No hay recordatorios en este momento");
+        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 4);
+        SQLiteDatabase db = admin.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT medicamento, dosis, hora, fechaRegistro FROM Recordatorio", null);
+
+        StringBuilder recordatorios = new StringBuilder();
+        long ahora = System.currentTimeMillis();
+
+        while (cursor.moveToNext()) {
+            String medicamento = cursor.getString(0);
+            int dosis = cursor.getInt(1);
+            int intervaloHoras = cursor.getInt(2);
+            long fechaRegistro = cursor.getLong(3);
+
+            long proximaToma = fechaRegistro + (intervaloHoras * 60L * 60L * 1000L);
+
+            String horaActual = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(ahora));
+            String horaToma = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(proximaToma));
+
+            //Se asignan los valores al stringbuilder para poder cambiar el recordatorio
+            if (horaActual.equals(horaToma)) {
+                recordatorios.append("Tomar ")
+                        .append(medicamento)
+                        .append(" x ")
+                        .append(dosis)
+                        .append(" dosis\n");
+
+                // Actualizar fechaRegistro para que se reprograme
+                long nuevaFechaRegistro = proximaToma;
+                ContentValues values = new ContentValues();
+                values.put("fechaRegistro", nuevaFechaRegistro);
+                db.update("Recordatorio", values, "medicamento=?", new String[]{medicamento});
+            }
         }
+
+        if (recordatorios.length() > 0) {
+            textViewRecordatorio.setText(recordatorios.toString());
+
+            // Limpiar después de 5 minutos
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                textViewRecordatorio.setText("");
+            }, 5 * 60 * 1000);
+        } else {
+            textViewRecordatorio.setText("No hay recordatorios activos en esta hora");
+        }
+
+        cursor.close();
+        db.close();
     }
+
     //BOTON AGREGAR
     public void Btn_Agregar(View view){
         Intent agregar = new Intent(this, AgregarMedicamento.class);

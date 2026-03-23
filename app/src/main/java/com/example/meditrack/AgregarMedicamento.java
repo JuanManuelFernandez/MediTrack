@@ -37,7 +37,7 @@ public class AgregarMedicamento extends AppCompatActivity {
     }
     //BOTON AGREGAR
     public void Btn_Agregar(View view){
-        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 3);
+        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 4);
         SQLiteDatabase BaseDeDatos = admin.getWritableDatabase();
 
         String medicamento = et_medicamento.getText().toString();
@@ -51,6 +51,7 @@ public class AgregarMedicamento extends AppCompatActivity {
             registro.put("hora", hora);
             registro.put("cantidad", cantidad);
             registro.put("dosis", dosis);
+            registro.put("fechaRegistro", System.currentTimeMillis());
 
             BaseDeDatos.insert("Recordatorio", null, registro);
 

@@ -22,32 +22,6 @@
         app:layout_constraintVertical_bias="0.04"
         tools:ignore="MissingConstraints" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardRecordatorio"
-        android:layout_width="394dp"
-        android:layout_height="115dp"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/green_light"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.112"
-        tools:ignore="MissingConstraints">
-
-        <TextView
-            android:id="@+id/textRecordatorio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/recordatorio"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
-
-    </com.google.android.material.card.MaterialCardView>
-
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
@@ -89,5 +63,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.642" />
+
+    <TextView
+        android:id="@+id/textViewRecordatorio"
+        android:layout_width="325dp"
+        android:layout_height="54dp"
+        android:text=""
+        android:textSize="15sp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/txtview_recordatorio"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.175" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
