@@ -1,6 +1,7 @@
 package com.example.meditrack;
 
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
@@ -20,14 +21,24 @@ public class AgregarMedicamento extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences prefs = getSharedPreferences("config", MODE_PRIVATE);
+        boolean oscuro = prefs.getBoolean("modoOscuro", false);
+
+        if (oscuro) {
+            setTheme(R.style.AppTheme_Oscuro);
+        } else {
+            setTheme(R.style.AppTheme_Claro);
+        }
+
         super.onCreate(savedInstanceState);
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_agregar_medicamento);
 
-        et_medicamento = (EditText)findViewById(R.id.txt_medicamento);
-        et_cantidad = (EditText)findViewById(R.id.txt_cantidad);
-        et_hora = (EditText)findViewById(R.id.txt_horario);
-        et_dosis = (EditText)findViewById(R.id.txt_dosis);
+        et_medicamento = findViewById(R.id.txt_medicamento);
+        et_cantidad = findViewById(R.id.txt_cantidad);
+        et_hora = findViewById(R.id.txt_horario);
+        et_dosis = findViewById(R.id.txt_dosis);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -43,26 +54,37 @@ public class AgregarMedicamento extends AppCompatActivity {
         String medicamento = et_medicamento.getText().toString();
         String cantidad = et_cantidad.getText().toString();
         String hora = et_hora.getText().toString();
+        int horaINT = Integer.parseInt(hora);
         String dosis = et_dosis.getText().toString();
 
         if(!medicamento.isEmpty() && !cantidad.isEmpty() && !hora.isEmpty()){
-            ContentValues registro = new ContentValues();
-            registro.put("medicamento", medicamento);
-            registro.put("hora", hora);
-            registro.put("cantidad", cantidad);
-            registro.put("dosis", dosis);
-            registro.put("fechaRegistro", System.currentTimeMillis());
+            if(!cantidad.equals("0") && !dosis.equals("0") && !hora.equals("0")){
+                if(horaINT <= 24){
+                    ContentValues registro = new ContentValues();
+                    registro.put("medicamento", medicamento);
+                    registro.put("hora", hora);
+                    registro.put("cantidad", cantidad);
+                    registro.put("dosis", dosis);
+                    registro.put("fechaRegistro", System.currentTimeMillis());
 
-            BaseDeDatos.insert("Recordatorio", null, registro);
+                    BaseDeDatos.insert("Recordatorio", null, registro);
 
-            BaseDeDatos.close();
+                    BaseDeDatos.close();
 
-            et_medicamento.setText("");
-            et_cantidad.setText("");
-            et_hora.setText("");
-            et_dosis.setText("");
+                    et_medicamento.setText("");
+                    et_cantidad.setText("");
+                    et_hora.setText("");
+                    et_dosis.setText("");
 
-            Toast.makeText(this, "Recordatorio guardado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Recordatorio guardado", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(this, "El intervalo de horas no puede ser mayor a 24", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(this, "Los valores deben ser mayor a 0", Toast.LENGTH_SHORT).show();
+            }
         }
         else{
             Toast.makeText(this, "Debe llenar todos los campos", Toast.LENGTH_SHORT).show();

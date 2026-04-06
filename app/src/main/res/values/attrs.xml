@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="botones_recuadro" format="color" />
+    <attr name="colorItemDeLista" format="color"/>
+    <attr name="colorEditText" format="color"/>
+    <attr name="colorHintEditText" format="color"/>
+</resources>

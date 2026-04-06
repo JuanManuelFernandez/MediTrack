@@ -1,13 +1,17 @@
 package com.example.meditrack;
 
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.app.AlertDialog;
-
 import android.os.Handler;
 import android.os.Looper;
+import android.util.TypedValue;
+import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ListView;
 import android.view.View;
@@ -15,6 +19,9 @@ import android.content.Intent;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -32,18 +39,37 @@ public class MainActivity extends AppCompatActivity {
             handler.postDelayed(this, 500); // 500 = 0,5
         }
     };
-
+    ConstraintLayout mainLayout;
+    Switch switchModoOscuro;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences prefs = getSharedPreferences("config", MODE_PRIVATE);
+        boolean oscuro = prefs.getBoolean("modoOscuro", false);
+
+        if (oscuro) {
+            setTheme(R.style.AppTheme_Oscuro);
+        } else {
+            setTheme(R.style.AppTheme_Claro);
+        }
+
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        mainLayout = findViewById(R.id.main);
+        switchModoOscuro = findViewById(R.id.switchModoOscuro);
+
+        switchModoOscuro.setChecked(oscuro);
+
+        switchModoOscuro.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            prefs.edit().putBoolean("modoOscuro", isChecked).apply();
+            recreate();
+        });
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
 
         CambiarTitulo();
         actualizarListaMedicamentos();
@@ -55,16 +81,16 @@ public class MainActivity extends AppCompatActivity {
             String itemSeleccionado = (String) parent.getItemAtPosition(position);
             String codigoSeleccionado = itemSeleccionado.split(" - ")[0];
 
-            new AlertDialog.Builder(MainActivity.this)
+            AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
                     .setTitle("Acciones")
                     .setMessage("¿Qué deseas hacer?")
-                    .setPositiveButton("Modificar", (dialog, which) -> {
+                    .setPositiveButton("Modificar", (dialogInterface, which) -> {
                         // MODIFICAR
                         Intent modificar = new Intent(this, ModificarRecordatorio.class);
                         modificar.putExtra("codigo", Integer.parseInt(codigoSeleccionado));
                         startActivity(modificar);
                     })
-                    .setNegativeButton("Eliminar", (dialog, which) -> {
+                    .setNegativeButton("Eliminar", (dialogInterface, which) -> {
                         AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 4);
                         SQLiteDatabase db = admin.getWritableDatabase();
 
@@ -74,7 +100,16 @@ public class MainActivity extends AppCompatActivity {
 
                         actualizarListaMedicamentos(); // refresca lista después de eliminar
                     })
-                    .show();
+                    .create();
+
+            dialog.show();
+
+            TypedValue value = new TypedValue();
+            getTheme().resolveAttribute(R.attr.botones_recuadro, value, true);
+            int color = value.data;
+
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(color);
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(color);
         });
     }
 
@@ -103,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 int cantidad = cursor.getInt(3);
                 int dosis = cursor.getInt(4);
 
-                lista.add(codigo + " - " + medicamento + " - " + hora + " horas" +
+                lista.add(codigo + " - " + medicamento + " - " + hora + " hora/s" +
                         " - (x" + dosis + ")" + " - Restantes: " + cantidad);
             } while (cursor.moveToNext());
         }
@@ -196,7 +231,6 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
         db.close();
     }
-
     public void Btn_Agregar(View view) {
         Intent agregar = new Intent(this, AgregarMedicamento.class);
         startActivity(agregar);

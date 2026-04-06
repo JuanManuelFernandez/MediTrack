@@ -1,5 +1,6 @@
 package com.example.meditrack;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,6 +22,15 @@ public class ModificarRecordatorio extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences prefs = getSharedPreferences("config", MODE_PRIVATE);
+        boolean oscuro = prefs.getBoolean("modoOscuro", false);
+
+        if (oscuro) {
+            setTheme(R.style.AppTheme_Oscuro);
+        } else {
+            setTheme(R.style.AppTheme_Claro);
+        }
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_modificar_recordatorio);
@@ -62,20 +72,31 @@ public class ModificarRecordatorio extends AppCompatActivity {
         String medicamento = et_medicamento.getText().toString();
         String cantidad = et_cantidad.getText().toString();
         String hora = et_hora.getText().toString();
+        int horaINT = Integer.parseInt(hora);
         String dosis = et_dosis.getText().toString();
 
         if(!medicamento.isEmpty() && !cantidad.isEmpty() && !hora.isEmpty()){
-            ContentValues registro = new ContentValues();
-            registro.put("medicamento", medicamento);
-            registro.put("hora", hora);
-            registro.put("cantidad", cantidad);
-            registro.put("dosis", dosis);
+            if(!cantidad.equals("0") && !hora.equals("0") && !dosis.equals("0")){
+                if(horaINT <= 24){
+                    ContentValues registro = new ContentValues();
+                    registro.put("medicamento", medicamento);
+                    registro.put("hora", hora);
+                    registro.put("cantidad", cantidad);
+                    registro.put("dosis", dosis);
 
-            int nuevo = BaseDeDatos.update("Recordatorio", registro, "codigo=" + codigo, null);
+                    int nuevo = BaseDeDatos.update("Recordatorio", registro, "codigo=" + codigo, null);
 
-            BaseDeDatos.close();
+                    BaseDeDatos.close();
 
-            Toast.makeText(this, "Recordatorio modificado correctamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Recordatorio modificado correctamente", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(this, "El intervalo de horas no puede ser mayor a 24", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(this, "Los valores deben ser mayor a 0", Toast.LENGTH_SHORT).show();
+            }
         }
         else{
             Toast.makeText(this, "Debe llenar todos los campos", Toast.LENGTH_SHORT).show();

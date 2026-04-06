@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:background="@drawable/fondo"
     android:layout_height="match_parent"
 
     tools:context=".MainActivity">
@@ -14,12 +13,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="34sp"
-        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04"
+        app:layout_constraintVertical_bias="0.069"
         tools:ignore="MissingConstraints" />
 
     <Button
@@ -43,7 +42,6 @@
         android:layout_height="wrap_content"
         android:text="@string/TextSubtitulo"
         android:textSize="20sp"
-        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.057"
@@ -55,7 +53,6 @@
         android:id="@+id/listaMedicamentos"
         android:layout_width="425dp"
         android:layout_height="479dp"
-        android:divider="@android:color/white"
         android:dividerHeight="1dp"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -78,5 +75,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.175" />
+
+    <Switch
+        android:id="@+id/switchModoOscuro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.009"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
