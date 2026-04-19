@@ -44,20 +44,20 @@
 
     <EditText
         android:id="@+id/txt_horario"
-        android:layout_width="134dp"
-        android:layout_height="40dp"
+        android:layout_width="149dp"
+        android:layout_height="38dp"
         android:ems="10"
-        android:hint="Horario"
+        android:hint="Intervalo horario"
         android:inputType="text"
-        android:textColor="?attr/colorEditText"
         android:text="@string/Horario"
+        android:textColor="?attr/colorEditText"
         android:textColorHint="?attr/colorHintEditText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.418"
+        app:layout_constraintHorizontal_bias="0.442"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.321"
+        app:layout_constraintVertical_bias="0.32"
         tools:ignore="MissingConstraints" />
 
     <Button
