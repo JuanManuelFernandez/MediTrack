@@ -78,12 +78,14 @@ public class ModificarRecordatorio extends AppCompatActivity {
         String medicamento = et_medicamento.getText().toString();
         String cantidad = et_cantidad.getText().toString();
         String hora = et_hora.getText().toString();
-        //Convertimos hora a horaINT para utilizarla en validaciones posteriores
-        int horaINT = Integer.parseInt(hora);
+        int horaINT = 0;
+        if(!hora.isEmpty()){
+            horaINT = Integer.parseInt(hora);
+        }
         String dosis = et_dosis.getText().toString();
 
         //Validaciones respectivas para modificar el recordatorio
-        if(!medicamento.isEmpty() && !cantidad.isEmpty() && !hora.isEmpty()){
+        if(!medicamento.isEmpty() && !cantidad.isEmpty() && !hora.isEmpty() && !dosis.isEmpty()){
             if(!cantidad.equals("0") && !hora.equals("0") && !dosis.equals("0")){
                 if(horaINT <= 24){
                     ContentValues registro = new ContentValues();

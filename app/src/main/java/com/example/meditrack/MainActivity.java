@@ -1,6 +1,7 @@
 package com.example.meditrack;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,6 +20,7 @@ import android.content.Intent;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private Runnable refrescarRunnable = new Runnable() {
         @Override
         public void run() {
+            CambiarTitulo();
             actualizarTextViewRecordatorio();
             handler.postDelayed(this, 500); // 500 = 0,5
         }
@@ -76,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });//Ajusta el tamaño del layout para que no se vea superpuesto con las barras de los dispositivos
 
-        CambiarTitulo();
         actualizarListaMedicamentos();
 
         ListView listView = findViewById(R.id.listaMedicamentos);
@@ -183,9 +185,44 @@ public class MainActivity extends AppCompatActivity {
         );
         listView.setAdapter(adapter); //Conectamos el adaptador a la lista y mostramos todos los registros en pantalla
     }
+    boolean ventanaAbierta = false;
+    private void CrearVentanaRecordatorio(final String medicamento, final int dosis, final int cantActual) {
+    //Variables final para evitar posibles reasignaciones
+        AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Acciones")
+                .setMessage("¿Confirmas la toma de " + medicamento + " x " + dosis + " dosis?")
+                .setPositiveButton("Confirmar", (dialogInterface, which) -> {
+                    AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(MainActivity.this, "administracion", null, 4);
+                    SQLiteDatabase dbWritable = admin.getWritableDatabase();
 
+                    int nuevaCant = cantActual - dosis;
+
+                    if (nuevaCant <= 0) {
+                        dbWritable.delete("Recordatorio", "medicamento=?", new String[]{medicamento});
+                    } else {
+                        ContentValues values = new ContentValues();
+                        values.put("fechaRegistro", System.currentTimeMillis());
+                        values.put("cantidad", nuevaCant);
+                        dbWritable.update("Recordatorio", values, "medicamento=?", new String[]{medicamento});
+                    }
+
+                    dbWritable.close();
+                    actualizarListaMedicamentos();
+                    Toast.makeText(MainActivity.this, "Toma confirmada", Toast.LENGTH_SHORT).show();
+                    ventanaAbierta = false;
+                    dialogInterface.dismiss();
+                })
+                .create();
+        dialog.show();
+
+        //Cambiamos el color de los botones en base al tema seleccionado (claro/oscuro)
+        TypedValue value = new TypedValue();
+        getTheme().resolveAttribute(R.attr.botones_recuadro, value, true);
+        int color = value.data;
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(color);
+    }
     private long tiempoExpiracionRecordatorio = 0;
-
     private void actualizarTextViewRecordatorio() {
         TextView textViewRecordatorio = findViewById(R.id.textViewRecordatorio);
 
@@ -214,11 +251,11 @@ public class MainActivity extends AppCompatActivity {
             String horaToma = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(proximaToma));
 
             //Si coinciden significa que es la hora de la toma
-            if (horaActual.equals(horaToma)) {
+            if (horaActual.equals(horaToma) && !ventanaAbierta) {
                 //Construcción de los mensajes
 
                 //Caso de que sea la ultima toma, se mostrara un mensaje distinto
-                if(cantidad == 1){
+                if(cantidad <= 1){
                     recordatorios.append("Tomar ultima dosis de ")
                             .append(medicamento)
                             .append(" x ")
@@ -232,26 +269,9 @@ public class MainActivity extends AppCompatActivity {
                             .append(dosis)
                             .append(" dosis");
                 }
+                CrearVentanaRecordatorio(medicamento, dosis, cantidad);
 
-                //Caculamos la nueva hora en la que se debe tomar el medicamento
-                long nuevaFechaRegistro = proximaToma;
-                //Se calcula la nueva cantidad restante del medicamento
-                int cantActual = cursor.getInt(4);
-                int nuevaCant = cantActual - dosis;
-
-                //Si la cantidad del medicamento llego a 0, eliminamos automáticamente el recordatorio
-                if(nuevaCant == 0){
-                    db.delete("Recordatorio", "medicamento=?", new String[]{medicamento});
-                }
-
-                //Caso de no eliminarlo, actualizamos la hora de la toma y la nueva cantidad
-                ContentValues values = new ContentValues();
-                values.put("fechaRegistro", nuevaFechaRegistro);
-                values.put("cantidad", nuevaCant);
-                db.update("Recordatorio", values, "medicamento=?", new String[]{medicamento});
-
-                //Actualizamos la lista y mostramos el mensaje
-                actualizarListaMedicamentos();
+                ventanaAbierta = true;
 
                 //Tiempo de expiración (Pasados 5 minutos se borra el mensaje)
                 tiempoExpiracionRecordatorio = ahora + (5 * 60 * 1000);
