@@ -60,34 +60,32 @@
         app:layout_constraintVertical_bias="0.324"
         tools:ignore="MissingConstraints" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/rojo"
+    <ImageButton
+        android:id="@+id/btnVolver"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:onClick="Btn_Volver"
-        android:text="@string/BotonVolver"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.312"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.569"
-        tools:ignore="MissingConstraints" />
+        android:padding="8dp"
+        android:src="@drawable/volver"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/green_light"
+    <ImageButton
+        android:id="@+id/btnAgregar"
+        android:layout_width="73dp"
+        android:layout_height="62dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:onClick="Btn_Agregar"
-        android:text="@string/Agregar"
+        android:padding="8dp"
+        android:src="@drawable/confirmar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.711"
+        app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.569"
+        app:layout_constraintVertical_bias="0.517"
         tools:ignore="MissingConstraints" />
 
     <EditText

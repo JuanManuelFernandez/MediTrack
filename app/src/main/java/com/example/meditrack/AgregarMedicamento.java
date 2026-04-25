@@ -48,7 +48,7 @@ public class AgregarMedicamento extends AppCompatActivity {
     }
     //BOTON AGREGAR
     public void Btn_Agregar(View view){
-        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 4);
+        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 6);
         SQLiteDatabase BaseDeDatos = admin.getWritableDatabase();
 
         String medicamento = et_medicamento.getText().toString();

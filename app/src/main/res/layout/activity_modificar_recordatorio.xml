@@ -60,35 +60,33 @@
         app:layout_constraintVertical_bias="0.382"
         tools:ignore="MissingConstraints" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/rojo"
+    <ImageButton
+        android:id="@+id/btnVolver"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:onClick="Btn_Volver"
-        android:text="@string/BotonVolver"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.315"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.607"
-        tools:ignore="MissingConstraints,OnClick" />
+        android:padding="8dp"
+        android:src="@drawable/volver"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/green_light"
+    <ImageButton
+        android:id="@+id/btnModificar"
+        android:layout_width="73dp"
+        android:layout_height="62dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:onClick="Btn_Modificar"
-        android:text="@string/Modificar"
+        android:padding="8dp"
+        android:src="@drawable/confirmar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.735"
+        app:layout_constraintHorizontal_bias="0.446"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.607"
-        tools:ignore="MissingConstraints,OnClick" />
+        app:layout_constraintVertical_bias="0.585"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/txt_dosis"
@@ -127,10 +125,10 @@
         android:text="Cantidad"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.328"
+        app:layout_constraintHorizontal_bias="0.326"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.345" />
+        app:layout_constraintVertical_bias="0.23" />
 
     <TextView
         android:id="@+id/textView6"
@@ -154,6 +152,6 @@
         app:layout_constraintHorizontal_bias="0.375"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.23" />
+        app:layout_constraintVertical_bias="0.345" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

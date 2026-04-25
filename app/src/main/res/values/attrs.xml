@@ -4,4 +4,5 @@
     <attr name="colorItemDeLista" format="color"/>
     <attr name="colorEditText" format="color"/>
     <attr name="colorHintEditText" format="color"/>
+    <attr name="colorItemRegistro" format="color"/>
 </resources>

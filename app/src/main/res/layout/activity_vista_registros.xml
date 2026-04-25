@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".VistaRegistros">
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/TituloRegistros"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.103" />
+
+    <ListView
+        android:id="@+id/listaRegistros"
+        android:layout_width="414dp"
+        android:layout_height="488dp"
+        android:dividerHeight="1dp"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.642" />
+
+    <ImageButton
+        android:id="@+id/btnVolver"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:onClick="Btn_Volver"
+        android:padding="8dp"
+        android:src="@drawable/volver"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <EditText
+        android:id="@+id/editTextTextBusca"
+        android:layout_width="188dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="Buscar medicamento"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.071"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.195" />
+
+    <ImageButton
+        android:id="@+id/btnAgregar"
+        android:layout_width="39dp"
+        android:layout_height="43dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:onClick="Btn_Buscar"
+        android:padding="8dp"
+        android:src="@drawable/lupa"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.548"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.191"
+        tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

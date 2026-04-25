@@ -13,8 +13,10 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase BaseDeDatos) {
         BaseDeDatos.execSQL("create table Recordatorio (codigo INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "medicamento TEXT NOT NULL, hora INTEGER NOT NULL, cantidad INTEGER NOT NULL, dosis INTEGER NOT NULL, fechaRegistro INTEGER NOT NULL)");
+        BaseDeDatos.execSQL("create table Registros (id INTEGER PRIMARY KEY AUTOINCREMENT, medicamento TEXT NOT NULL, dosis INTEGER NOT NULL, fechaToma TEXT NOT NULL)");
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
     }
 }

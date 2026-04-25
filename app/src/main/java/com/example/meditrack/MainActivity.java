@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.app.AlertDialog;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.util.TypedValue;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });//Ajusta el tamaño del layout para que no se vea superpuesto con las barras de los dispositivos
-
+        verificarTablas();
         actualizarListaMedicamentos();
 
         ListView listView = findViewById(R.id.listaMedicamentos);
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     })
                     //Eliminar
                     .setNegativeButton("Eliminar", (dialogInterface, which) -> {
-                        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 4); //Abrimos la base de datos
+                        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 6); //Abrimos la base de datos
                         SQLiteDatabase db = admin.getWritableDatabase(); //Modo escritura
                         db.delete("Recordatorio", "codigo=?", new String[]{String.valueOf(seleccionado.codigo)}); //Realizamos un delete utilizando el codigo del objeto seleccionado
                         db.close();
@@ -132,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
     //Metodo que devuelve una lista de objetos de Recordatorio
     private ArrayList<Recordatorio> ObtenerRecordatorios() {
         ArrayList<Recordatorio> lista = new ArrayList<>(); //ArrayList vacio para guardar los datos
-        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 4);
+        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 6);
         SQLiteDatabase BaseDeDatos = admin.getReadableDatabase(); //Modo lectura
 
         Cursor cursor = BaseDeDatos.rawQuery("SELECT codigo, medicamento, hora, cantidad, dosis FROM Recordatorio", null);
@@ -160,16 +162,28 @@ public class MainActivity extends AppCompatActivity {
 
     private void CambiarTitulo() {
         TextView titulo = findViewById(R.id.textView3);
+        ImageView imgSol = findViewById(R.id.imgSol);
+        ImageView imgAtardecer = findViewById(R.id.imgAtardecer);
+        ImageView imgLuna = findViewById(R.id.imgLuna);
 
         String horaActual = new SimpleDateFormat("HH", Locale.getDefault()).format(new Date());
         int hora = Integer.parseInt(horaActual);
 
         if (hora >= 6 && hora < 12) {
             titulo.setText("¡Buenos días!");
+            imgSol.setVisibility(View.VISIBLE);
+            imgAtardecer.setVisibility(View.GONE);
+            imgLuna.setVisibility(View.GONE);
         } else if (hora >= 12 && hora < 20) {
             titulo.setText("¡Buenas tardes!");
+            imgSol.setVisibility(View.GONE);
+            imgAtardecer.setVisibility(View.VISIBLE);
+            imgLuna.setVisibility(View.GONE);
         } else {
             titulo.setText("¡Buenas noches!");
+            imgSol.setVisibility(View.GONE);
+            imgAtardecer.setVisibility(View.GONE);
+            imgLuna.setVisibility(View.VISIBLE);
         }
     }
 
@@ -192,8 +206,18 @@ public class MainActivity extends AppCompatActivity {
                 .setTitle("Acciones")
                 .setMessage("¿Confirmas la toma de " + medicamento + " x " + dosis + " dosis?")
                 .setPositiveButton("Confirmar", (dialogInterface, which) -> {
-                    AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(MainActivity.this, "administracion", null, 4);
+                    AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(MainActivity.this, "administracion", null, 6);
                     SQLiteDatabase dbWritable = admin.getWritableDatabase();
+
+                    String fechaActual = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                            .format(new Date());
+
+                    ContentValues registro = new ContentValues();
+                    registro.put("medicamento", medicamento);
+                    registro.put("dosis", dosis);
+                    registro.put("fechaToma", fechaActual);
+
+                    dbWritable.insert("Registros", null, registro);
 
                     int nuevaCant = cantActual - dosis;
 
@@ -226,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
     private void actualizarTextViewRecordatorio() {
         TextView textViewRecordatorio = findViewById(R.id.textViewRecordatorio);
 
-        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 4);
+        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 6);
         SQLiteDatabase db = admin.getReadableDatabase(); //Modo lectura
 
         Cursor cursor = db.rawQuery("SELECT medicamento, dosis, hora, fechaRegistro, cantidad FROM Recordatorio", null);
@@ -287,8 +311,29 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
         db.close();
     }
+    private void verificarTablas() {
+        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "administracion", null, 6); // usa la versión actual
+        SQLiteDatabase db = admin.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String nombreTabla = cursor.getString(0);
+                Log.d("DB_CHECK", "Tabla encontrada: " + nombreTabla);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+    }
+
     public void Btn_Agregar(View view) {
         Intent agregar = new Intent(this, AgregarMedicamento.class);
         startActivity(agregar);
+    }
+    public void Btn_Historial(View view) {
+        Intent moverse = new Intent(this, VistaRegistros.class);
+        startActivity(moverse);
     }
 }

@@ -18,22 +18,23 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.069"
+        app:layout_constraintVertical_bias="0.037"
         tools:ignore="MissingConstraints" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/btnAgregar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:onClick="Btn_Agregar"
-        android:text="@string/btn_Agregar"
-        android:backgroundTint="@color/green_light"
+        android:padding="8dp"
+        android:src="@drawable/agregar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.649"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.904"
+        app:layout_constraintVertical_bias="0.955"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -65,16 +66,16 @@
         android:id="@+id/textViewRecordatorio"
         android:layout_width="325dp"
         android:layout_height="54dp"
-        android:text=""
-        android:textSize="15sp"
-        android:textColor="@android:color/white"
         android:background="@drawable/txtview_recordatorio"
         android:gravity="center"
+        android:text=""
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.175" />
+        app:layout_constraintVertical_bias="0.196" />
 
     <Switch
         android:id="@+id/switchModoOscuro"
@@ -90,5 +91,58 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.009"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <ImageView
+        android:id="@+id/imgSol"
+        android:layout_width="80dp"
+        android:layout_height="70dp"
+        android:src="@drawable/sol"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="77dp"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imgAtardecer"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:src="@drawable/atardecer"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="165dp"
+        android:layout_marginTop="70dp"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imgLuna"
+        android:layout_width="85dp"
+        android:layout_height="75dp"
+        android:src="@drawable/luna2"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="165dp"
+        android:layout_marginTop="75dp"
+        tools:ignore="MissingConstraints" />
+
+    <ImageButton
+        android:id="@+id/btnHistorial"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:onClick="Btn_Historial"
+        android:padding="8dp"
+        android:src="@drawable/registros"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.324"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.955"
+        tools:ignore="MissingConstraints" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

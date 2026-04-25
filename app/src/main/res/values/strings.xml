@@ -2,7 +2,7 @@
     <string name="app_name">MediTrack</string>
     <string name="btn_Agregar">Agregar recordatorio</string>
     <string name="recordatorio">Recordatorio</string>
-    <string name="TextSubtitulo">Medicamentos</string>
+    <string name="TextSubtitulo">Recordatorios activos</string>
     <string name="txt_medicamento" />
     <string name="Cantidad" />
     <string name="Horario" />
@@ -10,4 +10,5 @@
     <string name="Agregar">Agregar</string>
     <string name="Modificar">Modificar</string>
     <string name="Dosis"></string>
+    <string name="TituloRegistros">Historial</string>
 </resources>
