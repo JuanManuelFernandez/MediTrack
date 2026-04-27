@@ -85,7 +85,7 @@ public class VistaRegistros extends AppCompatActivity {
                 //Asignamos los valores de la lista a cada atributo del objeto
                 r.id = cursor.getInt(0);
                 r.medicamento = cursor.getString(1);
-                r.dosis = cursor.getInt(2);
+                r.dosis = cursor.getDouble(2);
                 r.fechaToma = cursor.getString(3);
 
                 lista.add(r); //Terminada de leer la fila, añadimos el objeto a la lista anteriormente vacia
@@ -142,7 +142,7 @@ public class VistaRegistros extends AppCompatActivity {
                     Registro r = new Registro();
                     r.id = cursor.getInt(0);
                     r.medicamento = cursor.getString(1);
-                    r.dosis = cursor.getInt(2);
+                    r.dosis = cursor.getDouble(2);
                     r.fechaToma = cursor.getString(3);
 
                     lista.add(r);

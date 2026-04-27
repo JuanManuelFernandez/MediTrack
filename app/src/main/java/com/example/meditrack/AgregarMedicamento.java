@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.view.View;
 import android.content.Intent;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -39,7 +40,6 @@ public class AgregarMedicamento extends AppCompatActivity {
         et_cantidad = findViewById(R.id.txt_cantidad);
         et_hora = findViewById(R.id.txt_horario);
         et_dosis = findViewById(R.id.txt_dosis);
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -61,7 +61,7 @@ public class AgregarMedicamento extends AppCompatActivity {
         String dosis = et_dosis.getText().toString();
 
         if(!medicamento.isEmpty() && !cantidad.isEmpty() && !hora.isEmpty() && !dosis.isEmpty()){
-            if(!cantidad.equals("0") && !dosis.equals("0") && !hora.equals("0")){
+            if(!cantidad.equals("0") && !dosis.equals("0") && !dosis.equals("0.") && !dosis.equals("0.0") && !hora.equals("0")){
                 if(horaINT <= 24){
                     ContentValues registro = new ContentValues();
                     registro.put("medicamento", medicamento);

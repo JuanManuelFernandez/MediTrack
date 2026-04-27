@@ -4,8 +4,8 @@ public class Recordatorio {
     public int codigo;
     public String medicamento;
     public String hora;
-    public int cantidad;
-    public int dosis;
+    public double cantidad;
+    public double dosis;
 
     @Override
     public String toString() {

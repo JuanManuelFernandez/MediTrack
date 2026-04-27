@@ -62,8 +62,8 @@ public class ModificarRecordatorio extends AppCompatActivity {
         //Seteamos los valores traidos de la base de datos del respectivo recordatorio
         et_medicamento.setText(cursor.getString(0));
         et_hora.setText(cursor.getString(1));
-        et_cantidad.setText(String.valueOf(cursor.getInt(2)));
-        et_dosis.setText(String.valueOf(cursor.getInt(3)));
+        et_cantidad.setText(String.valueOf(cursor.getDouble(2)));
+        et_dosis.setText(String.valueOf(cursor.getDouble(3)));
 
         cursor.close();
         db.close();
@@ -86,7 +86,7 @@ public class ModificarRecordatorio extends AppCompatActivity {
 
         //Validaciones respectivas para modificar el recordatorio
         if(!medicamento.isEmpty() && !cantidad.isEmpty() && !hora.isEmpty() && !dosis.isEmpty()){
-            if(!cantidad.equals("0") && !hora.equals("0") && !dosis.equals("0")){
+            if(!cantidad.equals("0") && !cantidad.equals("0.") && !cantidad.equals("0.0") && !hora.equals("0") && !dosis.equals("0") && !dosis.equals("0.") && !dosis.equals("0.0")){
                 if(horaINT <= 24){
                     ContentValues registro = new ContentValues();
                     registro.put("medicamento", medicamento);

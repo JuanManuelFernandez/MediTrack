@@ -147,8 +147,8 @@ public class MainActivity extends AppCompatActivity {
                 r.codigo = cursor.getInt(0);
                 r.medicamento = cursor.getString(1);
                 r.hora = cursor.getString(2);
-                r.cantidad = cursor.getInt(3);
-                r.dosis = cursor.getInt(4);
+                r.cantidad = cursor.getDouble(3);
+                r.dosis = cursor.getDouble(4);
 
                 lista.add(r); //Terminada de leer la fila, añadimos el objeto a la lista anteriormente vacia
             } while (cursor.moveToNext()); //Avanza hasta la siguiente fila
@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapter); //Conectamos el adaptador a la lista y mostramos todos los registros en pantalla
     }
     boolean ventanaAbierta = false;
-    private void CrearVentanaRecordatorio(final String medicamento, final int dosis, final int cantActual) {
+    private void CrearVentanaRecordatorio(final String medicamento, final double dosis, final double cantActual) {
     //Variables final para evitar posibles reasignaciones
         AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Acciones")
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
                     dbWritable.insert("Registros", null, registro);
 
-                    int nuevaCant = cantActual - dosis;
+                    double nuevaCant = cantActual - dosis;
 
                     if (nuevaCant <= 0) {
                         dbWritable.delete("Recordatorio", "medicamento=?", new String[]{medicamento});
@@ -262,10 +262,10 @@ public class MainActivity extends AppCompatActivity {
         //Recorreemos cada fila y extraemos los valores
         while (cursor.moveToNext()) {
             String medicamento = cursor.getString(0);
-            int dosis = cursor.getInt(1);
+            double dosis = cursor.getDouble(1);
             int intervaloHoras = cursor.getInt(2);
             long fechaRegistro = cursor.getLong(3);
-            int cantidad = cursor.getInt(4);
+            double cantidad = cursor.getDouble(4);
 
             long proximaToma = fechaRegistro + (intervaloHoras * 60L * 60L * 1000L);
             //Calculamos el tiempo exacto en milisegundos y lo sumamos a la fecha registrada del recordatorio y así obtenemos el momento exacto en donde se debe hacer la proxima toma

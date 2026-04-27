@@ -5,7 +5,7 @@ public class Registro {
 
     public String medicamento;
 
-    public int dosis;
+    public double dosis;
 
     public String fechaToma;
 
